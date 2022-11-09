@@ -21,7 +21,7 @@
   Eslint
   Typescript
   React
-  Next JS 
+  Next JS  
 
 ## Específicos(as) do Front-end 
 
