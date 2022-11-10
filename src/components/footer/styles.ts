@@ -1,13 +1,13 @@
 import { styled } from '../../styles'
 
 export const ContainerFooter = styled('footer', {
-  // position: 'inherit',
+  // position: 'sticky',
   // bottom: 0,
-  // left: 0,s
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
   height: '120px',
+  marginTop: '1rem',
 
   alignItems: 'center',
   justifyContent: 'space-between',

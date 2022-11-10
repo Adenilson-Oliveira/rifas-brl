@@ -17,9 +17,27 @@ export const globalStyles = globalCss({
     fontFamily: 'Montserrat',
     fontWeight: 400,
   },
+
+  h1: {
+    fontSize: '$title',
+    lineHeight: 1.6,
+  },
+  h2: {
+    fontSize: '$subtitle',
+    lineHeight: 1.3,
+  },
+  p: {
+    fontSize: '$text',
+    lineHeight: 1.6,
+  },
+  span: {
+    // fontSize: '$subText',
+    // color: '$gray6',
+    lineHeight: 1.6,
+  },
 })
 
 export const ContainerStyleBody = styled('main', {
-  minHeight: '100vh',
+  height: '260vh',
   padding: '1rem',
 })

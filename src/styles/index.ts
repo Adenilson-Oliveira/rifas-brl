@@ -35,8 +35,8 @@ export const {
     fontSizes: {
       text: '1rem',
       subText: '0.875rem',
-      title: '1.225rem',
-      subTitle: '1.125rem',
+      title: '1.5rem',
+      subTitle: '1.250rem',
     },
   },
 })
