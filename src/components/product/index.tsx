@@ -32,7 +32,10 @@ export default function Premio({
             <p>
               Sorteio dia
               <span>
-                {data.dia} às {data.hora}
+                <strong>
+                  {' '}
+                  {data.dia} às {data.hora}
+                </strong>
               </span>
             </p>
           </>

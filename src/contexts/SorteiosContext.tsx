@@ -5,6 +5,7 @@ interface SorteiosContextProviderProps {
 }
 
 type sorteio = {
+  id: string
   img: string
   unityPrice: number
   name: string
@@ -28,6 +29,7 @@ export function SorteiosContextProvider({
   const [sorteios] = useState<SorteiosContextType>({
     ativos: [
       {
+        id: '1',
         img: '/img/sorteios/xre.svg',
         unityPrice: 0.85,
         name: 'XRE 300 OU 15K',
@@ -37,6 +39,7 @@ export function SorteiosContextProvider({
         },
       },
       {
+        id: '2',
         img: '/img/sorteios/saveiro.svg',
         unityPrice: 2.5,
         name: 'SAVEIRO SURF',
