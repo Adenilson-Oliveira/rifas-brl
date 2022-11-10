@@ -1,4 +1,4 @@
-import { globalCss } from '.'
+import { globalCss, styled } from '.'
 
 export const globalStyles = globalCss({
   '*': {
@@ -8,7 +8,7 @@ export const globalStyles = globalCss({
   },
 
   body: {
-    backgroundColor: '$gray8',
+    backgroundColor: '$gray4',
     color: '$gray7',
     '-webkit-font-smoothing': 'antialiased',
   },
@@ -17,4 +17,9 @@ export const globalStyles = globalCss({
     fontFamily: 'Montserrat',
     fontWeight: 400,
   },
+})
+
+export const ContainerStyleBody = styled('main', {
+  minHeight: '100vh',
+  padding: '1rem',
 })

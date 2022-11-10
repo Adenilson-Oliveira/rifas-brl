@@ -14,14 +14,21 @@ export const ContainerHeader = styled('header', {
     backgroundColor: '$navigation',
     fontSize: 30,
   },
+})
 
-  '&:before': {
-    content: '',
-    width: '100vw',
-    height: 30,
-    backgroundColor: '$green',
-    position: 'absolute',
-    top: 70,
-    left: 0,
+export const ContainerStyleBorder = styled('div', {
+  // zIndex: -2,
+  position: 'absolute',
+  top: 69,
+  width: '100vw',
+  height: '1rem',
+  backgroundColor: '$navigation',
+
+  div: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: '$gray4',
+    height: '1.1rem',
+    width: '100%',
   },
 })
