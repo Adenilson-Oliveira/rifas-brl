@@ -3,7 +3,7 @@ import {
   ContainerEtapa,
   ContainerHome,
   ContainerProduct,
-} from '../styles/pages/Home'
+} from '../styles/pages/home'
 
 const sorteios = [
   {

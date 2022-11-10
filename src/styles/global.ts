@@ -18,6 +18,11 @@ export const globalStyles = globalCss({
     fontWeight: 400,
   },
 
+  input: {
+    outline: 'none',
+    border: 'none',
+  },
+
   h1: {
     fontSize: '$title',
     lineHeight: 1.6,
