@@ -1,8 +1,9 @@
 import { PageNotFoundError } from 'next/dist/shared/lib/utils'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
-import ProductCard from '../../components/product'
+import ProductCard from '../../components/productCard'
 import { SorteiosContext } from '../../contexts/SorteiosContext'
+import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
 
 export default function Product() {
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function Product() {
   }
 
   return (
-    <div>
+    <ContainerProduct>
       <ProductCard
         imgUrl={product.img}
         name={product.name}
@@ -28,6 +29,38 @@ export default function Product() {
         variant={true}
         data={product.data}
       />
-    </div>
+      <div className="title">
+        <h1>⚡ Cotas</h1>
+        <span>Escolha sua sorte</span>
+      </div>
+
+      <form>
+        <SelectQtde>
+          <p className="subTitle">Selecione a quantidade de números</p>
+
+          <div>
+            <div>
+              <span>+05</span>
+              <p>Selecionar</p>
+            </div>
+            <div>
+              <span>+10</span>
+              <p>Selecionar</p>
+            </div>
+            <div className="popular">
+              <span>+25</span>
+              <p>Selecionar</p>
+            </div>
+            <div>
+              <span>+50</span>
+              <p>Selecionar</p>
+            </div>
+          </div>
+          <input type="number" />
+        </SelectQtde>
+
+        <button type="submit">Selecionar Cotas</button>
+      </form>
+    </ContainerProduct>
   )
 }

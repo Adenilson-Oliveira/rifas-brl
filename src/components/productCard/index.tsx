@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { InstagramLogo, PaperPlaneTilt } from 'phosphor-react'
 import { ContainerProduct } from './style'
 
 export interface ProductCardProps {
@@ -29,13 +30,17 @@ export default function Premio({
         </p>
         {variant ? (
           <>
-            <p>
-              Sorteio dia
+            <p className="diaHorarioRedes">
               <span>
+                Sorteio dia
                 <strong>
                   {' '}
                   {data.dia} às {data.hora}
                 </strong>
+              </span>
+              <span className="redesSociais">
+                <PaperPlaneTilt />
+                <InstagramLogo />
               </span>
             </p>
           </>

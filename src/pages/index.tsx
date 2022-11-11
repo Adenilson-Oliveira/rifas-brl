@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useContext } from 'react'
 // import Link from 'next/link'
-import ProductCard from '../components/product'
+import ProductCard from '../components/productCard'
 import { SorteiosContext } from '../contexts/SorteiosContext'
 import { ContainerEtapa, ContainerHome } from '../styles/pages/home'
 
