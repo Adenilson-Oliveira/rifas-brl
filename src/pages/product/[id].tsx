@@ -11,13 +11,15 @@ export default function Product() {
   const { id } = router.query
 
   if (id === undefined) {
-    return PageNotFoundError
+    const page = new PageNotFoundError('Product not found')
+    return page.message
   }
 
   const product = sorteios.ativos.find((el) => el.id === id)
 
   if (product === undefined) {
-    return PageNotFoundError
+    const page = new PageNotFoundError('Product not found')
+    return page.message
   }
 
   return (

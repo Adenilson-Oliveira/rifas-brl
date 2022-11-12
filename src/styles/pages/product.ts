@@ -5,6 +5,31 @@ export const ContainerProduct = styled('div', {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    maxWidth: 600,
+    margin: '0 auto',
+  },
+
+  button: {
+    maxWidth: 600,
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    width: '100%',
+    marginTop: '1rem',
+    borderRadius: 10,
+    border: '1px solid $green',
+    backgroundColor: '$green',
+    fontWeight: 'bold',
+    fontSize: '$subTitle',
+    color: '$white',
+
+    '&:hover': {
+      transition: '1.5sms',
+      backgroundColor: '$green-light',
+      borderColor: '$green-light',
+    },
   },
 })
 
@@ -13,6 +38,8 @@ export const SelectQtde = styled('section', {
   padding: '1rem 2rem',
   borderRadius: 10,
   textAlign: 'center',
+  maxWidth: 600,
+  margin: '0 auto',
 
   '& .subTitle': {
     marginBottom: '2rem',
@@ -80,6 +107,7 @@ export const SelectQtde = styled('section', {
     border: '1px solid $gray5',
     borderRadius: 6,
     height: 40,
+    textAlign: 'center',
 
     '&::placeholder': {
       color: '$gray5',
