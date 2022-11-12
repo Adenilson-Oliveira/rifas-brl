@@ -7,7 +7,7 @@ export const ContainerFooter = styled('footer', {
   flexDirection: 'column',
   width: '100%',
   height: '120px',
-  marginTop: '1rem',
+  // marginTop: '1rem',
 
   alignItems: 'center',
   justifyContent: 'space-between',

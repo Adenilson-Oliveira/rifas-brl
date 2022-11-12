@@ -45,4 +45,6 @@ export const globalStyles = globalCss({
 export const ContainerStyleBody = styled('main', {
   height: '260vh',
   padding: '1rem',
+  paddingBottom: 0,
+  marginBottom: '-1rem',
 })

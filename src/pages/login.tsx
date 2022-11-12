@@ -1,6 +1,14 @@
+import { useContext } from 'react'
+import NavBar from '../components/navbar'
+import { ToggleMenuContext } from '../contexts/MenuNavigation'
 import { ContainerFormLogin, ContainerLogin } from '../styles/pages/login'
 
 export default function Login() {
+  const { activeNavBar } = useContext(ToggleMenuContext)
+
+  if (activeNavBar) {
+    return <NavBar></NavBar>
+  }
   return (
     <ContainerLogin>
       <h1>⚡ Login</h1>

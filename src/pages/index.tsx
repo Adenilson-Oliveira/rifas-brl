@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import { useContext } from 'react'
+import NavBar from '../components/navbar'
 // import Link from 'next/link'
 import ProductCard from '../components/productCard'
+import { ToggleMenuContext } from '../contexts/MenuNavigation'
 import { SorteiosContext } from '../contexts/SorteiosContext'
 import { ContainerEtapa, ContainerHome } from '../styles/pages/home'
 
@@ -33,6 +35,12 @@ const etapas = [
 export default function Home() {
   const sorteios = useContext(SorteiosContext)
   console.log(sorteios)
+
+  const { activeNavBar } = useContext(ToggleMenuContext)
+
+  if (activeNavBar) {
+    return <NavBar></NavBar>
+  }
 
   return (
     <ContainerHome>

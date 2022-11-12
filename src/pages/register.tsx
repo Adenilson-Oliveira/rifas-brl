@@ -1,9 +1,18 @@
+import { useContext } from 'react'
+import NavBar from '../components/navbar'
+import { ToggleMenuContext } from '../contexts/MenuNavigation'
 import {
   ContainerFormRegister,
   ContainerRegister,
 } from '../styles/pages/register'
 
 export default function Register() {
+  const { activeNavBar } = useContext(ToggleMenuContext)
+
+  if (activeNavBar) {
+    return <NavBar></NavBar>
+  }
+
   return (
     <ContainerRegister>
       <h1>⚡ Cadastro</h1>

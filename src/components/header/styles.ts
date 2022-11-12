@@ -32,3 +32,9 @@ export const ContainerStyleBorder = styled('div', {
     width: '100%',
   },
 })
+
+export const ListNavBar = styled('div', {
+  height: '100vh',
+  width: '100%',
+  backgroundColor: '$navigation',
+})

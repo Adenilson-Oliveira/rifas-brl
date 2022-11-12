@@ -1,7 +1,9 @@
 import { PageNotFoundError } from 'next/dist/shared/lib/utils'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
+import NavBar from '../../components/navbar'
 import ProductCard from '../../components/productCard'
+import { ToggleMenuContext } from '../../contexts/MenuNavigation'
 import { SorteiosContext } from '../../contexts/SorteiosContext'
 import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
 
@@ -9,6 +11,11 @@ export default function Product() {
   const router = useRouter()
   const sorteios = useContext(SorteiosContext)
   const { id } = router.query
+
+  const { activeNavBar } = useContext(ToggleMenuContext)
+  if (activeNavBar) {
+    return <NavBar></NavBar>
+  }
 
   if (id === undefined) {
     const page = new PageNotFoundError('Product not found')

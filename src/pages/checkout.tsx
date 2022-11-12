@@ -1,6 +1,15 @@
+import { useContext } from 'react'
+import NavBar from '../components/navbar'
+import { ToggleMenuContext } from '../contexts/MenuNavigation'
 import { ContainerCheckout, ContainerCotas } from '../styles/pages/checkout'
 
 export default function Checkout() {
+  const { activeNavBar } = useContext(ToggleMenuContext)
+
+  if (activeNavBar) {
+    return <NavBar></NavBar>
+  }
+
   const cotas = [1001, 2392, 1384, 2932, 6384, 9001, 2692, 1394, 5732, 7184]
 
   return (
