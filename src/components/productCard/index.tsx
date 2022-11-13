@@ -8,8 +8,8 @@ export interface ProductCardProps {
   price: number
   variant: boolean
   data: {
-    dia: string
-    hora: string
+    data_sorteio: string
+    horario_sorteio: string
   }
 }
 
@@ -35,7 +35,7 @@ export default function Premio({
                 Sorteio dia
                 <strong>
                   {' '}
-                  {data.dia} às {data.hora}
+                  {data.data_sorteio} às {data.horario_sorteio}
                 </strong>
               </span>
               <span className="redesSociais">
