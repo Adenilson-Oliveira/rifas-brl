@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app'
 import { ContainerStyleBody, globalStyles } from '../styles/global'
 import Header from '../components/header'
-import Footer from '../components/footer'
+// import Footer from '../components/footer'
 import { SorteiosContextProvider } from '../contexts/SorteiosContext'
 import { MenuNavigationProvider } from '../contexts/MenuNavigation'
 // import { useContext } from 'react'
@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </ContainerStyleBody>
 
-        <Footer />
+        {/* <Footer /> */}
       </MenuNavigationProvider>
     </SorteiosContextProvider>
   )

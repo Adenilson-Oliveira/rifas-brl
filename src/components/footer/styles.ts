@@ -1,11 +1,17 @@
 import { styled } from '../../styles'
 
 export const ContainerFooter = styled('footer', {
-  // position: 'sticky',
+  // position: 'fixed',
   // bottom: 0,
+  // left: 0,
+
+  position: 'absolute',
+  left: 0,
+
   display: 'flex',
   flexDirection: 'column',
-  width: '100%',
+  width: 'calc(100% )',
+  margin: '0 auto',
   height: '120px',
   // marginTop: '1rem',
 

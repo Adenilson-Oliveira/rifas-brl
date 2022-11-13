@@ -7,6 +7,11 @@ export const globalStyles = globalCss({
     boxSizing: 'border-box',
   },
 
+  // resolver problema do footer
+  'html, body': {
+    minHeight: '100%',
+  },
+
   body: {
     backgroundColor: '$gray4',
     color: '$gray7',
@@ -43,7 +48,7 @@ export const globalStyles = globalCss({
 })
 
 export const ContainerStyleBody = styled('main', {
-  height: '260vh',
+  height: '100%',
   padding: '1rem',
   paddingBottom: 0,
   marginBottom: '-1rem',

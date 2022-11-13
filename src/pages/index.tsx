@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { useContext } from 'react'
+import Footer from '../components/footer'
 import NavBar from '../components/navbar'
 // import Link from 'next/link'
 import ProductCard from '../components/productCard'
@@ -74,6 +75,7 @@ export default function Home() {
           </ContainerEtapa>
         )
       })}
+      <Footer />
     </ContainerHome>
   )
 }
