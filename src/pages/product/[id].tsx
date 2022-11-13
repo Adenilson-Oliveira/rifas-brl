@@ -1,40 +1,54 @@
-import { PageNotFoundError } from 'next/dist/shared/lib/utils'
-import { useRouter } from 'next/router'
+import { GetServerSideProps } from 'next'
+// import { PageNotFoundError } from 'next/dist/shared/lib/utils'
+// import { useRouter } from 'next/router'
 import { useContext } from 'react'
+import Stripe from 'stripe'
+import Footer from '../../components/footer'
 import NavBar from '../../components/navbar'
 import ProductCard from '../../components/productCard'
 import { ToggleMenuContext } from '../../contexts/MenuNavigation'
-import { SorteiosContext } from '../../contexts/SorteiosContext'
+// import { SorteiosContext } from '../../contexts/SorteiosContext'
+import { stripe } from '../../lib/stripe'
 import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
 
-export default function Product() {
-  const router = useRouter()
-  const sorteios = useContext(SorteiosContext)
-  const { id } = router.query
+interface ProductProps {
+  product: {
+    name: string
+    price: string
+    id: string
+    imgUrl: string
+    data
+  }
+}
+
+export default function Product({ product }: ProductProps) {
+  // const router = useRouter()
+  // const sorteios = useContext(SorteiosContext)
+  // const { id } = router.query
 
   const { activeNavBar } = useContext(ToggleMenuContext)
   if (activeNavBar) {
     return <NavBar></NavBar>
   }
 
-  if (id === undefined) {
-    const page = new PageNotFoundError('Product not found')
-    return page.message
-  }
+  // if (id === undefined) {
+  //   const page = new PageNotFoundError('Product not found')
+  //   return page.message
+  // }
 
-  const product = sorteios.ativos.find((el) => el.id === id)
+  // const product = sorteios.ativos.find((el) => el.id === id)
 
-  if (product === undefined) {
-    const page = new PageNotFoundError('Product not found')
-    return page.message
-  }
+  // if (product === undefined) {
+  //   const page = new PageNotFoundError('Product not found')
+  //   return page.message
+  // }
 
   return (
     <ContainerProduct>
       <ProductCard
-        imgUrl={product.img}
+        imgUrl={product.imgUrl}
         name={product.name}
-        price={product.unityPrice}
+        price={product.price}
         variant={true}
         data={product.data}
       />
@@ -70,6 +84,36 @@ export default function Product() {
 
         <button type="submit">Selecionar Cotas</button>
       </form>
+
+      <Footer />
     </ContainerProduct>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const productId = typeof params.id === 'string' ? params.id : params.id[0]
+
+  const product = await stripe.products.retrieve(productId, {
+    expand: ['default_price'],
+  })
+
+  // verificar se está logado se não estiver redirecionar o user para a tela de login
+
+  const price = product.default_price as Stripe.Price
+  const data = product.metadata
+  return {
+    props: {
+      product: {
+        id: product.id,
+        name: product.name,
+        imgUrl: product.images[0],
+        data,
+
+        price: new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(price.unit_amount / 100),
+      },
+    },
+  }
 }

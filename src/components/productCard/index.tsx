@@ -5,7 +5,7 @@ import { ContainerProduct } from './style'
 export interface ProductCardProps {
   imgUrl: string
   name: string
-  price: number
+  price: string
   variant: boolean
   data: {
     data_sorteio: string
@@ -25,13 +25,11 @@ export default function Premio({
       <Image src={imgUrl} alt="" width={366} height={290} />
       <div className="content">
         <h2>{name}</h2>
-        <p>
-          POR APENAS <span>{price}</span>
-        </p>
+        <p>POR APENAS {price}</p>
         {variant ? (
           <>
             <p className="diaHorarioRedes">
-              <span>
+              <span className="dataSorteio">
                 Sorteio dia
                 <strong>
                   {' '}

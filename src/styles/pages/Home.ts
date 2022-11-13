@@ -8,6 +8,17 @@ export const ContainerHome = styled('main', {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+
+  a: {
+    textDecoration: 'none',
+
+    h2: {
+      color: '$gray7',
+    },
+    p: {
+      color: '$gray7',
+    },
+  },
 })
 
 export const ContainerEtapa = styled('div', {

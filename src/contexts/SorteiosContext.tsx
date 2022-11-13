@@ -10,8 +10,8 @@ type sorteio = {
   unityPrice: number
   name: string
   data: {
-    dia: string
-    hora: string
+    data_sorteio: string
+    horario_sorteio: string
   }
 }
 
@@ -34,8 +34,8 @@ export function SorteiosContextProvider({
         unityPrice: 0.85,
         name: 'XRE 300 OU 15K',
         data: {
-          dia: '30/11/22',
-          hora: '8h00',
+          data_sorteio: '30/11/22',
+          horario_sorteio: '8h00',
         },
       },
       {
@@ -44,8 +44,8 @@ export function SorteiosContextProvider({
         unityPrice: 2.5,
         name: 'SAVEIRO SURF',
         data: {
-          dia: '22/12/22',
-          hora: '8h00',
+          data_sorteio: '22/12/22',
+          horario_sorteio: '8h00',
         },
       },
     ],

@@ -12,13 +12,13 @@ export default function NavBar() {
           <li onClick={() => setActiveNavBar(false)}>Inicio</li>
         </Link>
 
-        <Link href={'/checkout'}>
+        {/* <Link href={'/'}>
           <li onClick={() => setActiveNavBar(false)}>Sorteios</li>
         </Link>
 
-        <Link href={'/product/1'}>
-          <li onClick={() => setActiveNavBar(false)}>Contemplados</li>
-        </Link>
+        <Link href={'/'}>
+          <li onClick={() => setActiveNavBar(false)}>Ganhadores</li>
+        </Link> */}
 
         <Link href={'/login'}>
           <li onClick={() => setActiveNavBar(false)}>Login</li>

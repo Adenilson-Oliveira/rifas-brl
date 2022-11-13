@@ -59,4 +59,8 @@ export const ContainerProduct = styled('div', {
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
   },
+
+  '& .dataSorteio': {
+    fontSize: '0.8rem',
+  },
 })

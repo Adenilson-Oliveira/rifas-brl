@@ -25,6 +25,7 @@ export const ContainerProduct = styled('div', {
     fontSize: '$subTitle',
     color: '$white',
 
+    marginBottom: '4rem',
     '&:hover': {
       transition: '1.5sms',
       backgroundColor: '$green-light',

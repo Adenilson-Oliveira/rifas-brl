@@ -1,5 +1,6 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useContext } from 'react'
 import Stripe from 'stripe'
 import Footer from '../components/footer'
@@ -41,7 +42,7 @@ interface HomeProps {
     id: string
     name: string
     imgUrl: string
-    price: number
+    price: string
     data: {
       data_sorteio: string
       horario_sorteio: string
@@ -66,30 +67,17 @@ export default function Home({ products }: HomeProps) {
         <span>Escolha sua sorte</span>
       </div>
 
-      {/* <Link href={`/product`} to>Hello World!</Link> */}
-      {/* {sorteios.ativos.map((premio) => {
-        return (
-          <ProductCard
-            key={premio.img}
-            imgUrl={premio.img}
-            name={premio.name}
-            price={premio.unityPrice}
-            variant={false}
-            data={premio.data}
-          />
-        )
-      })} */}
-
       {products.map((sorteio) => {
         return (
-          <ProductCard
-            key={sorteio.id}
-            imgUrl={sorteio.imgUrl}
-            name={sorteio.name}
-            price={sorteio.price}
-            variant={false}
-            data={sorteio.data}
-          />
+          <Link href={`/product/${sorteio.id}`} key={sorteio.id}>
+            <ProductCard
+              imgUrl={sorteio.imgUrl}
+              name={sorteio.name}
+              price={sorteio.price}
+              variant={false}
+              data={sorteio.data}
+            />
+          </Link>
         )
       })}
 
@@ -109,30 +97,34 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ['data.default_price'],
   })
 
   const products = response.data.map((product) => {
     const price = product.default_price as Stripe.Price
-    const data = product.metadata as Stripe.Metadata
+    const data = product.metadata
     return {
       id: product.id,
       name: product.name,
       imgUrl: product.images[0],
       data,
 
-      price: price.unit_amount,
+      price: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(price.unit_amount / 100),
     }
   })
 
-  console.log(products)
-  console.log(response)
+  // console.log(products)
+  // console.log(response)
 
   return {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2, // 2 horas no cache
   }
 }
