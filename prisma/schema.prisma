@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  name     String
-  telefone String  @unique
-  email    String  @unique
-  senha    String
-  id_cota  Rifas[]
+  id           String  @id @default(uuid())
+  name         String
+  phone_number String
+  email        String  @unique
+  password     String
+  id_cota      Rifas[]
 
   @@map("user")
 }

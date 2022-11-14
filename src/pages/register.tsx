@@ -24,7 +24,7 @@ export default function Register() {
           </label>
           <label>
             <p>Telefone:</p>
-            <input type="password" placeholder="Digite a sua senha" />
+            <input type="phone" placeholder="Digite a sua senha" />
           </label>
           <label>
             <p>E-mail:</p>
