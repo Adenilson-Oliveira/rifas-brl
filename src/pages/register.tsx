@@ -6,8 +6,15 @@ import {
   ContainerRegister,
 } from '../styles/pages/register'
 
+import { useForm } from 'react-hook-form'
+
 export default function Register() {
   const { activeNavBar } = useContext(ToggleMenuContext)
+  const { register, handleSubmit } = useForm()
+
+  function handleSignIn(data) {
+    console.log(data)
+  }
 
   if (activeNavBar) {
     return <NavBar></NavBar>
@@ -17,7 +24,7 @@ export default function Register() {
     <ContainerRegister>
       <h1>⚡ Cadastro</h1>
       <div>
-        <ContainerFormRegister>
+        <ContainerFormRegister onSubmit={handleSubmit(handleSignIn)}>
           <label>
             <p>Nome:</p>
             <input type="text" placeholder="Digite o seu email" />
@@ -28,11 +35,19 @@ export default function Register() {
           </label>
           <label>
             <p>E-mail:</p>
-            <input type="text" placeholder="Digite o seu email" />
+            <input
+              {...register('email')}
+              type="text"
+              placeholder="Digite o seu email"
+            />
           </label>
           <label>
             <p>Senha:</p>
-            <input type="password" placeholder="Digite a sua senha" />
+            <input
+              {...register('password')}
+              type="password"
+              placeholder="Digite a sua senha"
+            />
           </label>
           <label>
             <p>Confirme sua senha:</p>

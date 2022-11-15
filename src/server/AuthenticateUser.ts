@@ -21,20 +21,14 @@ export class AuthenticateUserUseCase {
     })
 
     if (!userAlreadyExists) {
-      return {
-        status: 'error',
-        message: 'User not Exists',
-      }
+      throw new Error('User or password incorrect')
     }
 
     // verificar se a senha está correta
     const passwordMatch = await compare(password, userAlreadyExists.password)
 
     if (!passwordMatch) {
-      return {
-        status: 'error',
-        message: 'Password incorrect',
-      }
+      throw new Error('User or password incorrect')
     }
 
     // Gerar token do user
@@ -43,7 +37,7 @@ export class AuthenticateUserUseCase {
       expiresIn: '30m',
     })
 
-    return token
+    return { token }
   }
 
   async verificarTokenJwt({ authToken }: VerificarTokenJwtProps) {
