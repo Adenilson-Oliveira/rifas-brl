@@ -7,13 +7,24 @@ import {
 } from '../styles/pages/register'
 
 import { useForm } from 'react-hook-form'
+import { AuthContext } from '../contexts/AuthContext'
+
+interface SignProps {
+  email: string
+  password: string
+}
 
 export default function Register() {
   const { activeNavBar } = useContext(ToggleMenuContext)
   const { register, handleSubmit } = useForm()
+  const { isAuthenticated, signIn } = useContext(AuthContext)
 
-  function handleSignIn(data) {
+  console.log(isAuthenticated)
+
+  function handleSignIn(data: SignProps) {
     console.log(data)
+    const { email, password } = data
+    signIn({ email, password })
   }
 
   if (activeNavBar) {

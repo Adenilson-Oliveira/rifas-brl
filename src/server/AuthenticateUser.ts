@@ -8,7 +8,7 @@ interface GerarTokenJwtProps {
 }
 
 interface VerificarTokenJwtProps {
-  authToken: string
+  token: string
 }
 
 export class AuthenticateUserUseCase {
@@ -21,37 +21,67 @@ export class AuthenticateUserUseCase {
     })
 
     if (!userAlreadyExists) {
-      throw new Error('User or password incorrect')
+      // throw new Error('User or password incorrect')
+      return {
+        status: 'error',
+        message: 'Usuário não cadastrado, verifique seu email!',
+      }
     }
 
     // verificar se a senha está correta
     const passwordMatch = await compare(password, userAlreadyExists.password)
 
     if (!passwordMatch) {
-      throw new Error('User or password incorrect')
+      // throw new Error('User or password incorrect')
+      return {
+        status: 'error',
+        message: 'Senha incorreta, verifique sua senha!',
+      }
     }
 
     // Gerar token do user
     const token = sign({}, process.env.JWT_SECRET_KEY, {
       subject: userAlreadyExists.id,
-      expiresIn: '30m',
+      expiresIn: '2h',
     })
 
-    return { token }
+    const { name, id } = userAlreadyExists
+
+    return { status: 'success', token, user: { email, name, id } }
   }
 
-  async verificarTokenJwt({ authToken }: VerificarTokenJwtProps) {
-    const [, token] = authToken.split(' ')
+  async verificarTokenJwt({ token }: VerificarTokenJwtProps) {
+    // const [, token] = authToken.split(' ')
 
     try {
-      verify(token, process.env.JWT_SECRET_KEY)
+      const payloadToken = verify(token, process.env.JWT_SECRET_KEY)
+      // console.log(id)
+      const idUser: string =
+        typeof payloadToken.sub === 'string' ? payloadToken.sub : 'idInvalid'
 
-      return { tokenIsValid: true, status: 'ok', message: 'token is valid' }
+      const user = await prisma.user.findFirst({
+        where: { id: idUser },
+      })
+
+      const userInfoLogged = {
+        name: user.name,
+        email: user.email,
+        id: user.id,
+      }
+
+      return {
+        tokenIsValid: true,
+        // status: 'success',
+        // message: 'token is valid',
+        user: userInfoLogged,
+      }
     } catch (err) {
+      console.log(err)
+
       return {
         tokenIsValid: false,
-        status: 'error',
-        message: 'token not valid',
+        // status: 'error',
+        // message: 'token not valid',
       }
     }
   }

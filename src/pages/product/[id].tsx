@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 // import { PageNotFoundError } from 'next/dist/shared/lib/utils'
 // import { useRouter } from 'next/router'
 import { useContext } from 'react'
@@ -7,6 +8,8 @@ import Footer from '../../components/footer'
 import NavBar from '../../components/navbar'
 import ProductCard from '../../components/productCard'
 import { ToggleMenuContext } from '../../contexts/MenuNavigation'
+import { getAPIClient } from '../../lib/axios/axios'
+// import { api } from '../../lib/axios/api'
 // import { SorteiosContext } from '../../contexts/SorteiosContext'
 import { stripe } from '../../lib/stripe'
 import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
@@ -90,8 +93,23 @@ export default function Product({ product }: ProductProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const productId = typeof params.id === 'string' ? params.id : params.id[0]
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'rifas-br-v1.token': token } = parseCookies(ctx)
+  const apiServer = getAPIClient(ctx)
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  await apiServer.get('/api/rotateste')
+
+  const productId =
+    typeof ctx.params.id === 'string' ? ctx.params.id : ctx.params.id[0]
 
   const product = await stripe.products.retrieve(productId, {
     expand: ['default_price'],
