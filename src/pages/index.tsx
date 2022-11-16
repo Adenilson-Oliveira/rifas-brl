@@ -51,9 +51,6 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-  // const sorteios = useContext(SorteiosContext)
-  // console.log(sorteios)
-
   const { activeNavBar } = useContext(ToggleMenuContext)
 
   if (activeNavBar) {
@@ -117,9 +114,6 @@ export const getStaticProps: GetStaticProps = async () => {
       }).format(price.unit_amount / 100),
     }
   })
-
-  // console.log(products)
-  // console.log(response)
 
   return {
     props: {

@@ -76,7 +76,7 @@ export class AuthenticateUserUseCase {
         user: userInfoLogged,
       }
     } catch (err) {
-      console.log(err)
+      // console.log(err)
 
       return {
         tokenIsValid: false,

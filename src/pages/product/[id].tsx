@@ -8,9 +8,7 @@ import Footer from '../../components/footer'
 import NavBar from '../../components/navbar'
 import ProductCard from '../../components/productCard'
 import { ToggleMenuContext } from '../../contexts/MenuNavigation'
-import { getAPIClient } from '../../lib/axios/axios'
-// import { api } from '../../lib/axios/api'
-// import { SorteiosContext } from '../../contexts/SorteiosContext'
+import { api } from '../../lib/axios'
 import { stripe } from '../../lib/stripe'
 import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
 
@@ -25,26 +23,10 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  // const router = useRouter()
-  // const sorteios = useContext(SorteiosContext)
-  // const { id } = router.query
-
   const { activeNavBar } = useContext(ToggleMenuContext)
   if (activeNavBar) {
     return <NavBar></NavBar>
   }
-
-  // if (id === undefined) {
-  //   const page = new PageNotFoundError('Product not found')
-  //   return page.message
-  // }
-
-  // const product = sorteios.ativos.find((el) => el.id === id)
-
-  // if (product === undefined) {
-  //   const page = new PageNotFoundError('Product not found')
-  //   return page.message
-  // }
 
   return (
     <ContainerProduct>
@@ -95,8 +77,8 @@ export default function Product({ product }: ProductProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { 'rifas-br-v1.token': token } = parseCookies(ctx)
-  const apiServer = getAPIClient(ctx)
 
+  console.log(ctx.req.cookies)
   if (!token) {
     return {
       redirect: {
@@ -106,7 +88,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  await apiServer.get('/api/rotateste')
+  await api.get('/api/rotateste')
 
   const productId =
     typeof ctx.params.id === 'string' ? ctx.params.id : ctx.params.id[0]

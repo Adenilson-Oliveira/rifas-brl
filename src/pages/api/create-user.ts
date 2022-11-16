@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { hash } from 'bcryptjs'
 import { prisma } from '../../server/prisma/prisma'
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function sd(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.json({ error: 'Method not supported' })
   }

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { setCookie, parseCookies } from 'nookies'
 import { createContext, useEffect, useState } from 'react'
-import { apiBrowser } from '../lib/axios/api'
+import { api } from '../lib/axios'
 
 type User = {
   id: string
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
       // no video o diego fernandes fez utilizando uma promise.
       // Obs: ficar atento pois quando eu fiz desse jeito tive que mudar a compilação para es 2016
       async function verificarToken() {
-        const res = await apiBrowser.post('/api/auth-user', {
+        const res = await api.post('/api/auth-user', {
           token,
         })
 
@@ -79,7 +79,7 @@ export function AuthProvider({ children }) {
   }, [router])
 
   async function signIn({ email, password }: SignInData) {
-    const response = await apiBrowser.post('/api/auth-user', {
+    const response = await api.post('/api/auth-user', {
       email,
       password,
     })
@@ -91,7 +91,7 @@ export function AuthProvider({ children }) {
         maxAge: 60 * 60 * 2, // 2hours
       })
 
-      apiBrowser.defaults.headers.Authorization = 'Bearer ' + data.token
+      api.defaults.headers.Authorization = 'Bearer ' + data.token
 
       setUser(data.user)
 
