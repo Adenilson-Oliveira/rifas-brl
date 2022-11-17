@@ -76,9 +76,8 @@ export default function Product({ product }: ProductProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { 'rifas-br-v1.token': token } = parseCookies(ctx)
-
-  console.log(ctx.req.cookies)
+  // const { 'rifas-br-v1.token': token } = parseCookies(ctx)
+  const token = ctx.req.cookies['rifas-br-v1.token']
   if (!token) {
     return {
       redirect: {
@@ -88,7 +87,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  await api.get('/api/rotateste')
 
   const productId =
     typeof ctx.params.id === 'string' ? ctx.params.id : ctx.params.id[0]

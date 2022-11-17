@@ -11,7 +11,7 @@ export default function Login() {
   const { signIn } = useContext(AuthContext)
 
   async function handleLogin({ email, password }) {
-    const result = await signIn({ email, password })
+    const result = signIn({ email, password })
     console.log(result)
   }
 

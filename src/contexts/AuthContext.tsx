@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { setCookie, parseCookies } from 'nookies'
+import { parseCookies, setCookie } from 'nookies'
 import { createContext, useEffect, useState } from 'react'
 import { api } from '../lib/axios'
 
