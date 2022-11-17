@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 // import { PageNotFoundError } from 'next/dist/shared/lib/utils'
 // import { useRouter } from 'next/router'
 import { useContext } from 'react'
@@ -7,7 +8,7 @@ import Footer from '../../components/footer'
 import NavBar from '../../components/navbar'
 import ProductCard from '../../components/productCard'
 import { ToggleMenuContext } from '../../contexts/MenuNavigation'
-// import { SorteiosContext } from '../../contexts/SorteiosContext'
+import { api } from '../../lib/axios'
 import { stripe } from '../../lib/stripe'
 import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
 
@@ -17,31 +18,15 @@ interface ProductProps {
     price: string
     id: string
     imgUrl: string
-    data
+    data: any
   }
 }
 
 export default function Product({ product }: ProductProps) {
-  // const router = useRouter()
-  // const sorteios = useContext(SorteiosContext)
-  // const { id } = router.query
-
   const { activeNavBar } = useContext(ToggleMenuContext)
   if (activeNavBar) {
     return <NavBar></NavBar>
   }
-
-  // if (id === undefined) {
-  //   const page = new PageNotFoundError('Product not found')
-  //   return page.message
-  // }
-
-  // const product = sorteios.ativos.find((el) => el.id === id)
-
-  // if (product === undefined) {
-  //   const page = new PageNotFoundError('Product not found')
-  //   return page.message
-  // }
 
   return (
     <ContainerProduct>
@@ -90,8 +75,21 @@ export default function Product({ product }: ProductProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const productId = typeof params.id === 'string' ? params.id : params.id[0]
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  // const { 'rifas-br-v1.token': token } = parseCookies(ctx)
+  const token = ctx.req.cookies['rifas-br-v1.token']
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+
+  const productId =
+    typeof ctx.params.id === 'string' ? ctx.params.id : ctx.params.id[0]
 
   const product = await stripe.products.retrieve(productId, {
     expand: ['default_price'],
