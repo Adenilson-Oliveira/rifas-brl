@@ -6,7 +6,12 @@ import { ContainerBarraDeNavegacao } from './styles'
 
 export default function NavBar() {
   const { setActiveNavBar } = useContext(ToggleMenuContext)
-  const { isAuthenticated } = useContext(AuthContext)
+  const { isAuthenticated, signOut } = useContext(AuthContext)
+
+  function handleLogout() {
+    signOut()
+    setActiveNavBar(false)
+  }
 
   return (
     <ContainerBarraDeNavegacao>
@@ -22,9 +27,15 @@ export default function NavBar() {
         </Link>
 
         {isAuthenticated ? (
-          <Link href={'/'}>
-            <li onClick={() => setActiveNavBar(false)}>Minhas Cotas</li>
-          </Link>
+          <>
+            <Link href={'/'}>
+              <li onClick={() => setActiveNavBar(false)}>Minhas Cotas</li>
+            </Link>
+            <Link href={'/'}>
+              <li onClick={() => { handleLogout() }}>Sair</li>
+            </Link>
+          </>
+
         ) : (
           <>
             <Link href={'/login'}>

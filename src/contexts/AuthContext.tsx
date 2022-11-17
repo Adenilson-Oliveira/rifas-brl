@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { parseCookies, setCookie } from 'nookies'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { createContext, useEffect, useState } from 'react'
 import { api } from '../lib/axios'
 
@@ -26,6 +26,7 @@ type AuthContextType = {
   signIn: (data: SignInData) => void
   user: User
   setUser: (a: any) => void
+  signOut: () => void
 }
 
 export const AuthContext = createContext({} as AuthContextType)
@@ -113,8 +114,13 @@ export function AuthProvider({ children }) {
     console.log(response.data)
   }
 
+  async function signOut() {
+    setUser(null)
+    destroyCookie(undefined, 'rifas-br-v1.token')
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user, setUser }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, user, setUser, signOut }}>
       {children}
     </AuthContext.Provider>
   )
