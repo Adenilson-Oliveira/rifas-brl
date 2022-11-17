@@ -115,8 +115,10 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
-    setUser(null)
+
     destroyCookie(undefined, 'rifas-br-v1.token')
+    setUser(null)
+    router.push('/')
   }
 
   return (

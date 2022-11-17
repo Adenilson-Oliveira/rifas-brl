@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import NavBar from '../components/navbar'
@@ -21,6 +22,7 @@ export default function Login() {
   return (
     <ContainerLogin>
       <h1>⚡ Login</h1>
+      <p>faça login para concorrer aos prêmios</p>
       <div>
         <ContainerFormLogin onSubmit={handleSubmit(handleLogin)}>
           <label>
@@ -35,10 +37,11 @@ export default function Login() {
             <p>Senha:</p>
             <input
               {...register('password')}
-              type="password"
+              type="passwordrifasbr"
               placeholder="Digite a sua senha"
             />
           </label>
+          <Link href="/register" >Ainda não possui cadastro, clique aqui.</Link>
 
           <button type="submit">Entrar</button>
         </ContainerFormLogin>
