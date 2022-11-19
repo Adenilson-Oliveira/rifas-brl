@@ -101,8 +101,6 @@ export function AuthProvider({ children }) {
         maxAge: 60 * 60 * 2, // 2hours
       })
 
-      // api.defaults.headers.Authorization = 'Bearer ' + data.token
-
       setUser(data.user)
 
       router.push('/')

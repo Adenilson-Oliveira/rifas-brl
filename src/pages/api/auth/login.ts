@@ -9,6 +9,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   const { email, password } = req.body
 
+  if (!email || !password) {
+    res.status(200).json({
+      status: 'error',
+      menubar: 'Dados inválidos'
+    })
+  }
 
   const userAlreadyExists = await prisma.user.findFirst({
     where: {
@@ -16,8 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   })
 
+  // Verificar se o user já tem cadastro para fazer login
   if (!userAlreadyExists) {
-    // throw new Error('User or password incorrect')
     return res.status(200).json({
       status: 'error',
       message: 'Usuário não cadastrado, verifique seu email!',
