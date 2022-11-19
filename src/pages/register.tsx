@@ -10,21 +10,36 @@ import { useForm } from 'react-hook-form'
 import { AuthContext } from '../contexts/AuthContext'
 
 interface SignProps {
+  name: string
+  phone_number: string
   email: string
   password: string
+  confirm_password: string
 }
 
 export default function Register() {
   const { activeNavBar } = useContext(ToggleMenuContext)
   const { register, handleSubmit } = useForm()
-  const { isAuthenticated, signIn } = useContext(AuthContext)
+  const { isAuthenticated, registerUser } = useContext(AuthContext)
 
   console.log(isAuthenticated)
 
-  function handleSignIn(data: SignProps) {
-    console.log(data)
-    const { email, password } = data
-    signIn({ email, password })
+  function handleCreateUser({ email, password, name, phone_number, confirm_password }: SignProps) {
+
+    if (password !== confirm_password) {
+      console.log(`${JSON.stringify({
+        status: 'error',
+        message: 'A sua senha e a confirmação de senha precisam ser iguais!'
+      })}`)
+      return
+    }
+
+    async function createUser() {
+      const result = await registerUser({ email, password, name, phone_number })
+      console.log(result)
+    }
+    createUser()
+
   }
 
   if (activeNavBar) {
@@ -35,14 +50,14 @@ export default function Register() {
     <ContainerRegister>
       <h1>⚡ Cadastro</h1>
       <div>
-        <ContainerFormRegister onSubmit={handleSubmit(handleSignIn)}>
+        <ContainerFormRegister onSubmit={handleSubmit(handleCreateUser)}>
           <label>
             <p>Nome:</p>
-            <input type="text" placeholder="Digite o seu email" />
+            <input {...register('name')} type="text" placeholder="Digite o seu email" />
           </label>
           <label>
             <p>Telefone:</p>
-            <input type="phone" placeholder="Digite a sua senha" />
+            <input {...register('phone_number')} type="phone" placeholder="Digite a sua senha" />
           </label>
           <label>
             <p>E-mail:</p>
@@ -56,13 +71,13 @@ export default function Register() {
             <p>Senha:</p>
             <input
               {...register('password')}
-              type="password"
+              type="passwordrifasbr"
               placeholder="Digite a sua senha"
             />
           </label>
           <label>
             <p>Confirme sua senha:</p>
-            <input type="password" placeholder="Digite a sua senha" />
+            <input {...register('confirm_password')} type="passwordrifasbr" placeholder="Digite a sua senha" />
           </label>
 
           <button type="submit">Cadastrar</button>

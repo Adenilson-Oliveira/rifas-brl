@@ -21,12 +21,20 @@ type SignInData = {
   password: string
 }
 
+type RegisterProps = {
+  name: string
+  password: string
+  email: string
+  phone_number: string
+}
+
 type AuthContextType = {
   isAuthenticated: boolean
-  signIn: (data: SignInData) => void
+  signIn: (data: SignInData) => any
   user: User
   setUser: (a: any) => void
   signOut: () => void
+  registerUser: (a: RegisterProps) => any
 }
 
 export const AuthContext = createContext({} as AuthContextType)
@@ -37,6 +45,7 @@ export function AuthProvider({ children }) {
   const isAuthenticated = !!user
   const router = useRouter()
 
+  // verificar se já tem o token valido e atualizar a application com as info do user
   useEffect(() => {
     // verificar se já existe algum cookie, ver se está válido e setar a estado isAuthenticated e o estado do user
     const { 'rifas-br-v1.token': token } = parseCookies()
@@ -47,17 +56,16 @@ export function AuthProvider({ children }) {
       // no video o diego fernandes fez utilizando uma promise.
       // Obs: ficar atento pois quando eu fiz desse jeito tive que mudar a compilação para es 2016
       async function verificarToken() {
-        const res = await api.post('/api/auth-user', {
-          token,
-        })
+        const res = await api.post('/api/auth/verify-token')
 
         const tokenIsValid = res.data.tokenIsValid
 
-        const setUserState = res.data.user || null
+        const setUserState: User | null = res.data.user || null
         setUser(setUserState)
 
         if (!tokenIsValid) {
-          router.push('/login')
+          destroyCookie(undefined, 'rifas-br-v1.token')
+          router.push('/')
         }
         // return res
         // formato do retorno se o token for valido
@@ -79,8 +87,9 @@ export function AuthProvider({ children }) {
     console.log('teste')
   }, [router])
 
+  // gerar o token para o user se suas credentials estiverem corretas
   async function signIn({ email, password }: SignInData) {
-    const response = await api.post('/api/auth-user', {
+    const response = await api.post('/api/auth/login', {
       email,
       password,
     })
@@ -91,8 +100,6 @@ export function AuthProvider({ children }) {
       setCookie(undefined, 'rifas-br-v1.token', data.token, {
         maxAge: 60 * 60 * 2, // 2hours
       })
-
-      api.defaults.headers.Authorization = 'Bearer ' + data.token
 
       setUser(data.user)
 
@@ -114,6 +121,7 @@ export function AuthProvider({ children }) {
     console.log(response.data)
   }
 
+  // destroy the cookie jwt and the session
   async function signOut() {
 
     destroyCookie(undefined, 'rifas-br-v1.token')
@@ -121,8 +129,42 @@ export function AuthProvider({ children }) {
     router.push('/')
   }
 
+  // realizar o registro/cadastro do user
+  async function registerUser({ name, password, email, phone_number }: RegisterProps) {
+    const response = await api.post('/api/user/create', {
+      name,
+      password,
+      email,
+      phone_number
+    })
+
+    const data = response.data
+
+    if (data.status === 'error') {
+      return {
+        status: 'error',
+        message: data.message
+      }
+    }
+
+    if (data.status === 'success') {
+      setCookie(undefined, 'rifas-br-v1.token', data.token, {
+        maxAge: 60 * 60 * 2, // 2hours
+      })
+      setUser(data.user)
+
+      router.push('/')
+
+      return {
+        status: 'success',
+        message: 'Cadastro feito com sucesso!',
+      }
+
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user, setUser, signOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, user, setUser, signOut, registerUser }}>
       {children}
     </AuthContext.Provider>
   )
