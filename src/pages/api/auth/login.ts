@@ -19,10 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!userAlreadyExists) {
     // throw new Error('User or password incorrect')
-    return {
+    return res.status(200).json({
       status: 'error',
       message: 'Usuário não cadastrado, verifique seu email!',
-    }
+    })
   }
 
   // verificar se a senha está correta
@@ -30,10 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!passwordMatch) {
     // throw new Error('User or password incorrect')
-    return {
+    return res.status(200).json({
       status: 'error',
       message: 'Senha incorreta, verifique sua senha!',
-    }
+    })
   }
 
   // Gerar token do user

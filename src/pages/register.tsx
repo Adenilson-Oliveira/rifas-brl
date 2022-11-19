@@ -14,17 +14,29 @@ interface SignProps {
   phone_number: string
   email: string
   password: string
+  confirm_password: string
 }
 
 export default function Register() {
   const { activeNavBar } = useContext(ToggleMenuContext)
   const { register, handleSubmit } = useForm()
-  const { isAuthenticated, signIn } = useContext(AuthContext)
+  const { isAuthenticated, registerUser } = useContext(AuthContext)
 
   console.log(isAuthenticated)
 
-  function handleCreateUser({ email, password, name, phone_number }: SignProps) {
-    signIn({ email, password })
+  function handleCreateUser({ email, password, name, phone_number, confirm_password }: SignProps) {
+
+    if (password !== confirm_password) {
+      console.log(`${JSON.stringify({
+        status: 'error',
+        message: 'A sua senha e a confirmação de senha precisam ser iguais!'
+      })}`)
+      return
+    }
+
+    const result = registerUser({ email, password, name, phone_number })
+
+    console.log(result)
   }
 
   if (activeNavBar) {
@@ -62,7 +74,7 @@ export default function Register() {
           </label>
           <label>
             <p>Confirme sua senha:</p>
-            <input type="passwordrifasbr" placeholder="Digite a sua senha" />
+            <input {...register('confirm_password')} type="passwordrifasbr" placeholder="Digite a sua senha" />
           </label>
 
           <button type="submit">Cadastrar</button>
