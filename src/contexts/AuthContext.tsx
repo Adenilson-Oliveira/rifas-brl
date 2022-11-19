@@ -47,17 +47,16 @@ export function AuthProvider({ children }) {
       // no video o diego fernandes fez utilizando uma promise.
       // Obs: ficar atento pois quando eu fiz desse jeito tive que mudar a compilação para es 2016
       async function verificarToken() {
-        const res = await api.post('/api/auth-user', {
-          token,
-        })
+        const res = await api.post('/api/auth/verify-token')
 
         const tokenIsValid = res.data.tokenIsValid
 
-        const setUserState = res.data.user || null
+        const setUserState: User | null = res.data.user || null
         setUser(setUserState)
 
         if (!tokenIsValid) {
-          router.push('/login')
+          destroyCookie(undefined, 'rifas-br-v1.token')
+          router.push('/')
         }
         // return res
         // formato do retorno se o token for valido
@@ -80,7 +79,7 @@ export function AuthProvider({ children }) {
   }, [router])
 
   async function signIn({ email, password }: SignInData) {
-    const response = await api.post('/api/auth-user', {
+    const response = await api.post('/api/auth/login', {
       email,
       password,
     })

@@ -10,6 +10,8 @@ import { useForm } from 'react-hook-form'
 import { AuthContext } from '../contexts/AuthContext'
 
 interface SignProps {
+  name: string
+  phone_number: string
   email: string
   password: string
 }
@@ -21,9 +23,7 @@ export default function Register() {
 
   console.log(isAuthenticated)
 
-  function handleSignIn(data: SignProps) {
-    console.log(data)
-    const { email, password } = data
+  function handleCreateUser({ email, password, name, phone_number }: SignProps) {
     signIn({ email, password })
   }
 
@@ -35,14 +35,14 @@ export default function Register() {
     <ContainerRegister>
       <h1>⚡ Cadastro</h1>
       <div>
-        <ContainerFormRegister onSubmit={handleSubmit(handleSignIn)}>
+        <ContainerFormRegister onSubmit={handleSubmit(handleCreateUser)}>
           <label>
             <p>Nome:</p>
-            <input type="text" placeholder="Digite o seu email" />
+            <input {...register('name')} type="text" placeholder="Digite o seu email" />
           </label>
           <label>
             <p>Telefone:</p>
-            <input type="phone" placeholder="Digite a sua senha" />
+            <input {...register('phone_number')} type="phone" placeholder="Digite a sua senha" />
           </label>
           <label>
             <p>E-mail:</p>
@@ -56,13 +56,13 @@ export default function Register() {
             <p>Senha:</p>
             <input
               {...register('password')}
-              type="password"
+              type="passwordrifasbr"
               placeholder="Digite a sua senha"
             />
           </label>
           <label>
             <p>Confirme sua senha:</p>
-            <input type="password" placeholder="Digite a sua senha" />
+            <input type="passwordrifasbr" placeholder="Digite a sua senha" />
           </label>
 
           <button type="submit">Cadastrar</button>
