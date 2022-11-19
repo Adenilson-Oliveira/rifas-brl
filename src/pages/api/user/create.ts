@@ -9,21 +9,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   const { name, email, password, phone_number } = req.body
 
-  // verificar se usuário já existe  -------------
-  const userAlreadyExists = await prisma.user.findFirst({
-    where: {
-      email,
-    },
-  })
-
-  console.log(req.body)
-
-  if (userAlreadyExists) {
-    // throw new Error('User already exists!')
-    return res.status(400).json({
+  if (!name || !email || !password || !phone_number) {
+    return res.status(200).json({
       status: 'error',
-      message: 'Esse email já está cadastrado.',
+      message: 'Dados inválidos ou incompletos',
     })
+  }
+
+  // verificar se usuário já existe  -------------
+  if (email) {
+    const userAlreadyExists: any = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    })
+
+    if (userAlreadyExists) {
+      // throw new Error('User already exists!')
+      return res.status(200).json({
+        status: 'error',
+        message: 'Esse email já está cadastrado.',
+      })
+    }
   }
 
   // gerar hash do password ------------

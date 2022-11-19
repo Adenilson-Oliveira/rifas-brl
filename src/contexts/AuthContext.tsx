@@ -143,7 +143,10 @@ export function AuthProvider({ children }) {
     const data = response.data
 
     if (data.status === 'error') {
-      return data
+      return {
+        status: 'error',
+        message: data.message
+      }
     }
 
     if (data.status === 'success') {
@@ -153,6 +156,12 @@ export function AuthProvider({ children }) {
       setUser(data.user)
 
       router.push('/')
+
+      return {
+        status: 'success',
+        message: 'Cadastro feito com sucesso!',
+      }
+
     }
   }
 

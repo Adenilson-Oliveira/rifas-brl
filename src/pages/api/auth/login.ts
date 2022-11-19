@@ -1,7 +1,6 @@
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
-// import { AuthenticateUserUseCase } from '../../../server/AuthenticateUser'
 import { prisma } from '../../../server/prisma/prisma'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -29,7 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const passwordMatch = await compare(password, userAlreadyExists.password)
 
   if (!passwordMatch) {
-    // throw new Error('User or password incorrect')
     return res.status(200).json({
       status: 'error',
       message: 'Senha incorreta, verifique sua senha!',
@@ -45,15 +43,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { name, id } = userAlreadyExists
 
   return res.status(200).json({ status: 'success', token, user: { email, name, id } })
-
-
-  // const authenticateUser = new AuthenticateUserUseCase()
-  // const resultGenerateToken = await authenticateUser.gerarTokenJwt({
-  //   email,
-  //   password,
-  // })
-  // return res.status(200).json(resultGenerateToken)
-
-
 
 }

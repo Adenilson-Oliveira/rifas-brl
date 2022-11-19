@@ -34,9 +34,12 @@ export default function Register() {
       return
     }
 
-    const result = registerUser({ email, password, name, phone_number })
+    async function createUser() {
+      const result = await registerUser({ email, password, name, phone_number })
+      console.log(result)
+    }
+    createUser()
 
-    console.log(result)
   }
 
   if (activeNavBar) {
