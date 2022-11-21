@@ -1,14 +1,18 @@
 import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
+import { useRouter } from 'next/router'
+import { setCookie } from 'nookies'
+// import { parseCookies } from 'nookies'
 // import { PageNotFoundError } from 'next/dist/shared/lib/utils'
 // import { useRouter } from 'next/router'
-import { useContext } from 'react'
+import { FormEvent, useContext, useState } from 'react'
+// import { useForm } from 'react-hook-form'
 import Stripe from 'stripe'
 import Footer from '../../components/footer'
 import NavBar from '../../components/navbar'
 import ProductCard from '../../components/productCard'
 import { ToggleMenuContext } from '../../contexts/MenuNavigation'
 import { api } from '../../lib/axios'
+// import { api } from '../../lib/axios'
 import { stripe } from '../../lib/stripe'
 import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
 
@@ -23,9 +27,35 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
+
+  const [valueQtde, setValueQtde] = useState<number>(1)
+  const router = useRouter()
+
+
   const { activeNavBar } = useContext(ToggleMenuContext)
   if (activeNavBar) {
     return <NavBar></NavBar>
+  }
+
+  // const { register, handleSubmit, watch, formState: { errors } } = useForm() 
+
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    console.log(valueQtde)
+    const qtde = valueQtde.toString()
+
+    // guadar tanto o nome da tabela que é pra consultar quanto a qtde nos cookies para acessar no SSR de checkout
+    setCookie(undefined, 'rifas-br-v1.qtde', qtde)
+
+    setCookie(undefined, 'rifas-br-v1.database', product.data.database)
+
+    router.push('/checkout')
+  }
+
+  function handleChangeValue(event) {
+    setValueQtde(parseInt(event.target.value))
   }
 
   return (
@@ -42,29 +72,29 @@ export default function Product({ product }: ProductProps) {
         <span>Escolha sua sorte</span>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <SelectQtde>
           <p className="subTitle">Selecione a quantidade de números</p>
 
           <div>
-            <div>
+            <div className="popular" onClick={() => setValueQtde((prev) => prev + 5)}>
               <span>+05</span>
               <p>Selecionar</p>
             </div>
-            <div>
+            <div onClick={() => setValueQtde((prev) => prev + 10)}>
               <span>+10</span>
               <p>Selecionar</p>
             </div>
-            <div className="popular">
+            <div onClick={() => setValueQtde((prev) => prev + 25)}>
               <span>+25</span>
               <p>Selecionar</p>
             </div>
-            <div>
+            <div onClick={() => setValueQtde((prev) => prev + 50)}>
               <span>+50</span>
               <p>Selecionar</p>
             </div>
           </div>
-          <input type="number" />
+          <input type="number" value={valueQtde} onChange={handleChangeValue} min={1} max={100} required />
         </SelectQtde>
 
         <button type="submit">Selecionar Cotas</button>
