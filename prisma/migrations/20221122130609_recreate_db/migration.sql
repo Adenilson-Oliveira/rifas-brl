@@ -1,14 +1,13 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "user" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone_number" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
 
-  - You are about to drop the `rifas` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "rifas" DROP CONSTRAINT "rifas_user_id_fkey";
-
--- DropTable
-DROP TABLE "rifas";
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "rifaifhone" (
@@ -19,6 +18,9 @@ CREATE TABLE "rifaifhone" (
 
     CONSTRAINT "rifaifhone_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "rifaifhone_cota_key" ON "rifaifhone"("cota");

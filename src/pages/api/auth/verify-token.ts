@@ -36,11 +36,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         tokenIsValid: true,
         user: userInfoLogged,
       })
+
+
     } catch (err) {
+
       console.log(err)
       return res.status(200).json({
         tokenIsValid: false,
       })
+
     }
   }
 

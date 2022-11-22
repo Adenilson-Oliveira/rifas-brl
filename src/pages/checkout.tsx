@@ -121,3 +121,26 @@ export default function Checkout(props) {
 }
 
 
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  const token = ctx.req.cookies['rifas-br-v1.token']
+  const qtde = ctx.req.cookies['rifas-br-v1.qtde']
+  const database = ctx.req.cookies['rifas-br-v1.database']
+
+
+
+  const res = await api.post('/api/rifas/select-cotas', {
+    token,
+    qtde,
+    database,
+  })
+
+
+  console.log(res.data)
+
+  return {
+    props: {
+
+    }
+  }
+}
