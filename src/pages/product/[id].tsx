@@ -23,6 +23,7 @@ interface ProductProps {
     id: string
     imgUrl: string
     data: any
+    defaultPriceId: string
   }
 }
 
@@ -50,6 +51,8 @@ export default function Product({ product }: ProductProps) {
     setCookie(undefined, 'rifas-br-v1.qtde', qtde)
 
     setCookie(undefined, 'rifas-br-v1.database', product.data.database)
+
+    setCookie(undefined, 'rifas-br-v1.product-price-id', product.defaultPriceId)
 
     router.push('/checkout')
   }
@@ -117,18 +120,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-
-  const productId =
-    typeof ctx.params.id === 'string' ? ctx.params.id : ctx.params.id[0]
+  // o parametro id pode vir uma string ou um array de string 
+  const productId = typeof ctx.params.id === 'string' ? ctx.params.id : ctx.params.id[0]
 
   const product = await stripe.products.retrieve(productId, {
     expand: ['default_price'],
   })
 
-  // verificar se está logado se não estiver redirecionar o user para a tela de login
+  // verificar se é válido se não for redirecionar o user para a tela de login
 
   const price = product.default_price as Stripe.Price
   const data = product.metadata
+
+  console.log(price)
   return {
     props: {
       product: {
@@ -141,6 +145,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
           style: 'currency',
           currency: 'BRL',
         }).format(price.unit_amount / 100),
+        defaultPriceId: price.id,
       },
     },
   }

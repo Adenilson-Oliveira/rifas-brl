@@ -1,31 +1,37 @@
-import { Prisma, PrismaClient, RifaIFhone, User } from '@prisma/client'
+// import { Prisma, PrismaClient, RifaIFhone, User } from '@prisma/client'
+import { url } from 'inspector'
 import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
+import { useRouter } from 'next/router'
+// import { redirect } from 'next/dist/server/api-utils'
+import { destroyCookie } from 'nookies'
 import { useContext, useState } from 'react'
-import { PrimaryExpression } from 'typescript'
+// import { PrimaryExpression } from 'typescript'
 import NavBar from '../components/navbar'
 import { ToggleMenuContext } from '../contexts/MenuNavigation'
 import { api } from '../lib/axios'
-import { prisma } from '../server/prisma/prisma'
+// import { prisma } from '../server/prisma/prisma'
 import { ContainerCheckout, ContainerCotas } from '../styles/pages/checkout'
 
 
-// type cotasType = {
-//   id: string
-//   cota: string
-//   status: string
-//   user?: string
-//   user_id?: string
-// }
+type cotasType = {
+  id: string
+  cota: string
+  status: string
+  user?: string
+  user_id?: string
+}
 
-// interface CkeckoutProps {
-//   cotas: cotasType[]
-// }
+interface CheckoutProps {
+  cotas: cotasType[]
+  productPriceId: string
+}
 
 
 
-export default function Checkout(props) {
+export default function Checkout(props: CheckoutProps) {
   const { activeNavBar } = useContext(ToggleMenuContext)
+  const router = useRouter()
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
   const [cotas, setCotas] = useState({
     ativas: props.cotas,
@@ -33,6 +39,21 @@ export default function Checkout(props) {
   })
 
 
+  async function handleBuyProduct() {
+    setIsCreatingCheckoutSession(true)
+
+    const res = await api.post('/api/stripe/create-checkout-session', {
+      cotas,
+      priceId: props.productPriceId,
+    })
+
+    if (res.data.status === 'success') {
+      window.location.href = res.data.checkoutStripeUrl
+    } else {
+      console.log(res)
+      setIsCreatingCheckoutSession(false)
+    }
+  }
 
 
   if (activeNavBar) {
@@ -103,7 +124,7 @@ export default function Checkout(props) {
 
       </ContainerCotas>
 
-      <button>Comprar</button>
+      <button onClick={handleBuyProduct} disabled={isCreatingCheckoutSession}>Comprar</button>
       <p>
         POR APENAS <span>R$ 8,50</span>
       </p>
@@ -126,8 +147,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const token = ctx.req.cookies['rifas-br-v1.token']
   const qtde = ctx.req.cookies['rifas-br-v1.qtde']
   const database = ctx.req.cookies['rifas-br-v1.database']
+  const productPriceId = ctx.req.cookies['rifas-br-v1.product-price-id']
 
-
+  destroyCookie(ctx, 'rifas-br-v1.qtde', {})
+  destroyCookie(ctx, 'rifas-br-v1.database', {})
+  destroyCookie(ctx, 'rifas-br-v1.product-price-id', {})
 
   const res = await api.post('/api/rifas/select-cotas', {
     token,
@@ -135,12 +159,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     database,
   })
 
+  let cotas = []
+
+  if (res.data.status === 'success') {
+    cotas = res.data.cotas
+  }
+
+  // if (res.data.status === 'error') {
+  //   return {
+  //     redirect: '/'
+  //   }
+  // }
 
   console.log(res.data)
 
   return {
     props: {
-
+      cotas,
+      productPriceId,
     }
   }
 }

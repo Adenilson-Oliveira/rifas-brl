@@ -37,6 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const cotas = await prisma.$queryRaw`SELECT * FROM ${Prisma.raw(database)} WHERE status='available' ORDER BY RANDOM() LIMIT ${Prisma.raw(qtde)}`
 
+    // atualizar aqui para reserved 
+
     console.log(cotas)
 
     return res.status(200).json({
