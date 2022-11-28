@@ -42,17 +42,18 @@ export default function Checkout(props: CheckoutProps) {
   async function handleBuyProduct() {
     setIsCreatingCheckoutSession(true)
 
-    const res = await api.post('/api/stripe/create-checkout-session', {
+    const res = await api.post('/api/transactions/create-checkout-session', {
       cotas,
       priceId: props.productPriceId,
     })
 
-    if (res.data.status === 'success') {
-      window.location.href = res.data.checkoutStripeUrl
-    } else {
-      console.log(res)
-      setIsCreatingCheckoutSession(false)
-    }
+    // if (res.data.status === 'success') {
+    //   window.location.href = res.data.checkoutStripeUrl
+    // } else {
+    //   console.log(res)
+    //   setIsCreatingCheckoutSession(false)
+    // }
+    console.log(res.data)
   }
 
 
