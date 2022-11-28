@@ -9,7 +9,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
 
   // antes de criar a checkout session eu salvo a transação no meu banco de dados
 
-
+  if (req.method !== 'POST') {
+    return res.status(404).json({
+      message: 'method not supported'
+    })
+  }
 
   // id do preço do produto 
   const { priceId, cotas } = req.body
@@ -29,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
       {
         title: 'Cota da Rifa do Ifhone',
         unit_price: 1.99,
-        quantity: 10,
+        quantity: qtde,
 
         // url da img do item
         picture_url: "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif",
@@ -42,6 +46,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
     },
     auto_return: "all",
 
+    // id of the transaction in the database 
+    external_reference: '',
+
+    // name of the business 
+    statement_descriptor: "MY BUSINESS Teste ",
+
     payment_methods: {
 
       excluded_payment_types: [
@@ -52,7 +62,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
           id: "credit_card",
         }
       ],
-    }
+    },
+    notification_url: `${process.env.NEXT_URL}/api/transactions/payment-notification`
   }
 
   const result = await mercadopago.preferences.create(preference)
@@ -70,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
   // pegar esse objeto de checkout session e dar uma estudada para ver o que preciso guardar no banco de dados
 
 
-  res.status(200).json({ status: 'success', checkoutStripeUrl: result })
+  res.status(200).json({ status: 'success', checkoutMPUrl: result.body.init_point })
 
 
   // pegar esse objeto de checkout session e dar uma estudada para ver o que preciso guardar no banco de dados

@@ -47,12 +47,12 @@ export default function Checkout(props: CheckoutProps) {
       priceId: props.productPriceId,
     })
 
-    // if (res.data.status === 'success') {
-    //   window.location.href = res.data.checkoutStripeUrl
-    // } else {
-    //   console.log(res)
-    //   setIsCreatingCheckoutSession(false)
-    // }
+    if (res.data.status === 'success') {
+      window.location.href = res.data.checkoutMPUrl
+    } else {
+      console.log(res)
+      setIsCreatingCheckoutSession(false)
+    }
     console.log(res.data)
   }
 
@@ -156,7 +156,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const res = await api.post('/api/rifas/select-cotas', {
     token,
-    qtde: 10,
+    qtde,
     database: 'rifaifhone',
   })
 
