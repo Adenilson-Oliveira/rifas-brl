@@ -5,6 +5,7 @@ import Header from '../components/header'
 // import { SorteiosContextProvider } from '../contexts/SorteiosContext'
 import { MenuNavigationProvider } from '../contexts/MenuNavigation'
 import { AuthProvider } from '../contexts/AuthContext'
+import { SorteiosContextProvider } from '../contexts/SorteiosContext'
 // import { useContext } from 'react'
 // import NavBar from '../components/navbar'
 
@@ -15,17 +16,17 @@ export default function App({ Component, pageProps }: AppProps) {
   // console.log(activeNavBar)
 
   return (
-    // <SorteiosContextProvider>
-    <AuthProvider>
-      <MenuNavigationProvider>
-        <Header />
-        <ContainerStyleBody>
-          <Component {...pageProps} />
-        </ContainerStyleBody>
+    <SorteiosContextProvider>
+      <AuthProvider>
+        <MenuNavigationProvider>
+          <Header />
+          <ContainerStyleBody>
+            <Component {...pageProps} />
+          </ContainerStyleBody>
 
-        {/* <Footer /> */}
-      </MenuNavigationProvider>
-    </AuthProvider>
-    // </SorteiosContextProvider>
+          {/* <Footer /> */}
+        </MenuNavigationProvider>
+      </AuthProvider>
+    </SorteiosContextProvider>
   )
 }

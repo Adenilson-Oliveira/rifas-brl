@@ -155,8 +155,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const res = await api.post('/api/rifas/select-cotas', {
     token,
-    qtde,
-    database,
+    qtde: 10,
+    database: 'rifaifhone',
   })
 
   let cotas = []

@@ -6,28 +6,34 @@ import { setCookie } from 'nookies'
 // import { useRouter } from 'next/router'
 import { FormEvent, useContext, useState } from 'react'
 // import { useForm } from 'react-hook-form'
-import Stripe from 'stripe'
 import Footer from '../../components/footer'
 import NavBar from '../../components/navbar'
 import ProductCard from '../../components/productCard'
 import { ToggleMenuContext } from '../../contexts/MenuNavigation'
-import { api } from '../../lib/axios'
+import { SorteiosContext } from '../../contexts/SorteiosContext'
 // import { api } from '../../lib/axios'
-import { stripe } from '../../lib/stripe'
 import { ContainerProduct, SelectQtde } from '../../styles/pages/product'
 
-interface ProductProps {
-  product: {
-    name: string
-    price: string
-    id: string
-    imgUrl: string
-    data: any
-    defaultPriceId: string
-  }
-}
+// interface ProductProps {
+//   product: {
+//     name: string
+//     price: string
+//     id: string
+//     imgUrl: string
+//     data: any
+//     defaultPriceId: string
+//   }
+// }
 
-export default function Product({ product }: ProductProps) {
+// { product }: ProductProps
+
+
+
+export default function Product() {
+
+  const sorteios = useContext(SorteiosContext)
+  console.log(sorteios)
+  const sorteioIfhone = sorteios.ativos[0]
 
   const [valueQtde, setValueQtde] = useState<number>(1)
   const router = useRouter()
@@ -50,9 +56,9 @@ export default function Product({ product }: ProductProps) {
     // guadar tanto o nome da tabela que é pra consultar quanto a qtde nos cookies para acessar no SSR de checkout
     setCookie(undefined, 'rifas-br-v1.qtde', qtde)
 
-    setCookie(undefined, 'rifas-br-v1.database', product.data.database)
+    setCookie(undefined, 'rifas-br-v1.database', 'rifaifhone')
 
-    setCookie(undefined, 'rifas-br-v1.product-price-id', product.defaultPriceId)
+    setCookie(undefined, 'rifas-br-v1.product-price-id', '1.99')
 
     router.push('/checkout')
   }
@@ -64,11 +70,11 @@ export default function Product({ product }: ProductProps) {
   return (
     <ContainerProduct>
       <ProductCard
-        imgUrl={product.imgUrl}
-        name={product.name}
-        price={product.price}
+        imgUrl={sorteioIfhone.imgUrl}
+        name={sorteioIfhone.name}
+        price={sorteioIfhone.unityPrice}
         variant={true}
-        data={product.data}
+        data={sorteioIfhone.data}
       />
       <div className="title">
         <h1>⚡ Cotas</h1>
@@ -108,45 +114,4 @@ export default function Product({ product }: ProductProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const { 'rifas-br-v1.token': token } = parseCookies(ctx)
-  const token = ctx.req.cookies['rifas-br-v1.token']
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    }
-  }
 
-  // o parametro id pode vir uma string ou um array de string 
-  const productId = typeof ctx.params.id === 'string' ? ctx.params.id : ctx.params.id[0]
-
-  const product = await stripe.products.retrieve(productId, {
-    expand: ['default_price'],
-  })
-
-  // verificar se é válido se não for redirecionar o user para a tela de login
-
-  const price = product.default_price as Stripe.Price
-  const data = product.metadata
-
-  console.log(price)
-  return {
-    props: {
-      product: {
-        id: product.id,
-        name: product.name,
-        imgUrl: product.images[0],
-        data,
-
-        price: new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(price.unit_amount / 100),
-        defaultPriceId: price.id,
-      },
-    },
-  }
-}
