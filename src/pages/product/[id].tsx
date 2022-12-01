@@ -115,3 +115,19 @@ export default function Product() {
 }
 
 
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  const token = ctx.req.cookies['rifas-br-v1.token']
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {}
+  }
+}
