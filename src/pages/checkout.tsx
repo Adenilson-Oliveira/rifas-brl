@@ -42,17 +42,19 @@ export default function Checkout(props: CheckoutProps) {
   async function handleBuyProduct() {
     setIsCreatingCheckoutSession(true)
 
-    const res = await api.post('/api/stripe/create-checkout-session', {
+    const res = await api.post('/api/transactions/create-checkout-session', {
       cotas,
       priceId: props.productPriceId,
     })
 
     if (res.data.status === 'success') {
-      window.location.href = res.data.checkoutStripeUrl
+      // window.location.href = res.data.checkoutMPUrl
+      console.log(res.data.checkoutMPUrl)
     } else {
       console.log(res)
       setIsCreatingCheckoutSession(false)
     }
+    console.log(res.data)
   }
 
 
@@ -156,7 +158,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const res = await api.post('/api/rifas/select-cotas', {
     token,
     qtde,
-    database,
+    database: 'rifaifhone',
   })
 
   let cotas = []

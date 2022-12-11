@@ -6,9 +6,10 @@ interface SorteiosContextProviderProps {
 
 type sorteio = {
   id: string
-  img: string
-  unityPrice: number
+  imgUrl: string
+  unityPrice: string
   name: string
+  variant: boolean
   data: {
     data_sorteio: string
     horario_sorteio: string
@@ -30,25 +31,18 @@ export function SorteiosContextProvider({
     ativos: [
       {
         id: '1',
-        img: '/img/sorteios/xre.svg',
-        unityPrice: 0.85,
-        name: 'XRE 300 OU 15K',
+        imgUrl: '/img/sorteios/ifhone.png',
+        name: 'I FHONE 8 PLUS',
+        unityPrice: 'R$ 1,99',
+        variant: false,
         data: {
-          data_sorteio: '30/11/22',
-          horario_sorteio: '8h00',
-        },
-      },
-      {
-        id: '2',
-        img: '/img/sorteios/saveiro.svg',
-        unityPrice: 2.5,
-        name: 'SAVEIRO SURF',
-        data: {
-          data_sorteio: '22/12/22',
-          horario_sorteio: '8h00',
-        },
-      },
+          data_sorteio: '30/12/22',
+          horario_sorteio: '8H00'
+        }
+      }
+
     ],
+
 
     concluidos: [],
 

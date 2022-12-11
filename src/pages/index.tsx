@@ -2,14 +2,12 @@ import { GetStaticProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useContext } from 'react'
-import Stripe from 'stripe'
 import Footer from '../components/footer'
 import NavBar from '../components/navbar'
 // import Link from 'next/link'
 import ProductCard from '../components/productCard'
 import { ToggleMenuContext } from '../contexts/MenuNavigation'
 // import { SorteiosContext } from '../contexts/SorteiosContext'
-import { stripe } from '../lib/stripe'
 import { ContainerEtapa, ContainerHome } from '../styles/pages/home'
 
 const etapas = [
@@ -37,20 +35,34 @@ const etapas = [
   },
 ]
 
-interface HomeProps {
-  products: {
-    id: string
-    name: string
-    imgUrl: string
-    price: string
+const products = [
+  {
+    id: '1',
+    imgUrl: '/img/sorteios/ifhone.png',
+    name: 'I FHONE 8 PLUS',
+    price: 'R$ 1,99',
+    variant: false,
     data: {
-      data_sorteio: string
-      horario_sorteio: string
+      data_sorteio: '30/12/22',
+      horario_sorteio: '8H00'
     }
-  }[]
-}
+  }
+]
 
-export default function Home({ products }: HomeProps) {
+// interface HomeProps {
+//   products: {
+//     id: string
+//     name: string
+//     imgUrl: string
+//     price: string
+//     data: {
+//       data_sorteio: string
+//       horario_sorteio: string
+//     }
+//   }[]
+// }
+
+export default function Home() {
   const { activeNavBar } = useContext(ToggleMenuContext)
 
   if (activeNavBar) {
@@ -94,31 +106,4 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const response = await stripe.products.list({
-    expand: ['data.default_price'],
-  })
 
-  const products = response.data.map((product) => {
-    const price = product.default_price as Stripe.Price
-    const data = product.metadata
-    return {
-      id: product.id,
-      name: product.name,
-      imgUrl: product.images[0],
-      data,
-
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(price.unit_amount / 100),
-    }
-  })
-
-  return {
-    props: {
-      products,
-    },
-    revalidate: 60 * 60 * 2, // 2 horas no cache
-  }
-}
