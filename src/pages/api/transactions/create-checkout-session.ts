@@ -19,8 +19,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
   const { priceId, cotas } = req.body
   const qtde = cotas.ativas.length
 
-  const successUrlApp = `${process.env.NEXT_URL}/success`
-  const cancelUrlApp = `${process.env.NEXT_URL}/`
+  const successUrlApp = `${process.env.APP_REMOTE_URL}/success`
+  const cancelUrlApp = `${process.env.APP_BASE_URL}/`
 
 
   mercadopago.configure({
@@ -41,16 +41,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
     ],
     back_urls: {
       success: successUrlApp,
-      failure: cancelUrlApp,
-      pending: cancelUrlApp,
+      //testando props no redirect do mercadopago
+      failure: successUrlApp,
+      pending: successUrlApp,
+      // failure: cancelUrlApp,
+      // pending: cancelUrlApp,
     },
-    auto_return: "all",
+    auto_return: "approved",
 
     // id of the transaction in the database 
     external_reference: '',
 
     // name of the business 
-    statement_descriptor: "MY BUSINESS Teste ",
+    statement_descriptor: "Rifas BR",
 
     payment_methods: {
 
@@ -58,12 +61,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse,
         {
           id: "ticket",
         },
-        {
-          id: "credit_card",
-        }
+        // não posso excluir esse meio de pagamento agora pois estou fazendo teste para os possiveis resultados e com os catões de teste é mais fácil
+        // {
+        //   id: "credit_card",
+        // }
       ],
     },
-    notification_url: `${process.env.NEXT_URL}/api/transactions/payment-notification`
+    notification_url: `${process.env.APP_REMOTE_URL}/api/transactions/payment-notification`
   }
 
   const result = await mercadopago.preferences.create(preference)

@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next'
 import Image from 'next/image'
 import {
   BuyDetails,
@@ -52,4 +53,21 @@ export default function Success() {
       <p>Problemas com sua compra? clique aqui.</p>
     </ContainerSuccess>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+
+
+  const urlReq = req
+  console.log(urlReq)
+
+  const urlParams = req.headers.params
+  console.log(urlParams)
+
+  return {
+    props: {
+
+    }
+  }
 }

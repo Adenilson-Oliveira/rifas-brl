@@ -48,7 +48,8 @@ export default function Checkout(props: CheckoutProps) {
     })
 
     if (res.data.status === 'success') {
-      window.location.href = res.data.checkoutMPUrl
+      // window.location.href = res.data.checkoutMPUrl
+      console.log(res.data.checkoutMPUrl)
     } else {
       console.log(res)
       setIsCreatingCheckoutSession(false)
